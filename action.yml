@@ -34,6 +34,7 @@ runs:
           | jq -c '.[] | select(.name | contains("'${BRANCH_NAME}'")) .id' \
           | jq -r \
           ) \
+          
         echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
         
     - shell: bash
