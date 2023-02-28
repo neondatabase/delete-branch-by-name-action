@@ -1,0 +1,45 @@
+name: "Neon Database Delete Branch"
+author: "Neon Database"
+description: "Deletes Neon Postgres branch with Id"
+branding:
+  icon: "box"
+  color: "red"
+
+inputs:
+  project_id:
+    required: true
+    type: string
+  branch_name:
+    required: true
+    type: string
+  api_key:
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Search branch by name
+      id: get_branch_id
+      run: |
+        branch_id=$(curl --silent \
+          "https://console.neon.tech/api/v2/projects/${PROJECT_ID}/branches" \
+          --header "Accept: application/json" \
+          --header "Content-Type: application/json" \
+          --header "Authorization: Bearer ${API_KEY}" \
+          | jq -r .branches \
+          | jq -c '.[] | select(.name | contains("'${SHA}'")) .id' \
+          | jq -r \
+          ) \
+
+        echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
+      env:
+        PROJECT_ID: ${{ inputs.project_id }}
+        API_KEY: ${{ inputs.api_key }}
+        SHA: ${{ inputs.branch_name }}
+        
+      - name: Delete Neon Branch
+        uses: neondatabase/delete-branch-action@v2
+        with:
+          project_id: ${{ inputs.project_id }}
+          branch_id: ${{ steps.get_branch_id.outputs.branch_id }}
+          api_key: ${{ inputs.api_key }}
