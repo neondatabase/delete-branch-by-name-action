@@ -27,7 +27,7 @@ runs:
           --header "Content-Type: application/json" \
           --header "Authorization: Bearer ${API_KEY}" \
           | jq -r .branches \
-          | jq -c '.[] | select(.name | contains("'${SHA}'")) .id' \
+          | jq -c '.[] | select(.name | contains("'${BRANCH_NAME}'")) .id' \
           | jq -r \
           ) \
 
@@ -35,7 +35,7 @@ runs:
       env:
         PROJECT_ID: ${{ inputs.project_id }}
         API_KEY: ${{ inputs.api_key }}
-        SHA: ${{ inputs.branch_name }}
+        BRANCH_NAME: ${{ inputs.branch_name }}
         
       - name: Delete Neon Branch
         uses: neondatabase/delete-branch-action@v2
