@@ -30,10 +30,6 @@ runs:
           | jq -c '.[] | select(.name | contains("'${BRANCH_NAME}'")) .id' \
           | jq -r \
           ) \
-        if [ -z "$branch_id" ]; then
-          echo "Error: branch_id is empty." >&2
-          exit 1
-        fi
         echo "branch_id=${branch_id}" >> $GITHUB_OUTPUT
         
       env:
