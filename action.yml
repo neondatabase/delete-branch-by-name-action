@@ -37,6 +37,7 @@ runs:
         BRANCH_NAME: ${{ inputs.branch_name }}
         
     - shell: bash
+      name: Echo Branch ID
       run: echo ${{ steps.get_branch_id.outputs.branch_id }}
 
     - name: Delete Neon Branch
