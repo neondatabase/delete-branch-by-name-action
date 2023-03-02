@@ -14,7 +14,7 @@ run-name: Delete a Neon Branch by name 🚀
 on: [push]
 jobs:
   delete-neon-branch-by-name:
-    uses: neondatabase/delete-branch-by-name-action.yml@beta
+    uses: neondatabase/delete-branch-by-name-action.yml@main
     with:
       project_id: rapid-haze-373089
       branch_name: my_branch
